@@ -33,7 +33,7 @@ Estamos testando sua capacidade de implementar infraestrutura automatizada moder
 
 2.3.1 - AppSec -> scan-app -> Teste a segurança da aplicação ./app2. Recomendamos uma ou mais ferramentas SAST.
 
-2.3.2 - AppSec -> scan-docker -> Teste a segurança do Docker(docker image security scanning) no app1 criado por você.
+2.3.2 - AppSec -> scan-docker -> Teste a segurança do Dockerfile/Imagem(docker image security scanning) criado para o ../app1.
 
 2.4 - Deploy -> Criar um script para implementar de forma automatizada a aplicação. Deploy deve ser feito via pipeline no local de sua escolha. Recomendamos AWS (EC2, ECS, Fargate, Beanstalk, etc).
 
@@ -41,13 +41,13 @@ Estamos testando sua capacidade de implementar infraestrutura automatizada moder
 
 4 - Corrigir headers HTTP de segurança ausentes na aplicação app1.
 
-5 - Disponibilizar uma URL/IP com o retorno do Aplicação "Hello World! {hostname}!".
+5 - Disponibilizar uma URL/IP com o retorno da aplicação app1 "Hello World! {hostname}!".
 
 ## Envie sua solução
 Crie um repositório público(recomendamos o Github). Preferimos ver um histórico de tentativa e erro do que um único push. Quando terminar, envie-nos a URL do repositório do git, URL/IP da aplicação e relatório de segurança com as evidências.
 
 ## Bônus
-1 - Fazer upload do site /app3/index.html para o s3, disponibilizar o acesso via CloudFront e adicionar HTTP Security Headers com Lambda@Edge.
+1 - Fazer upload do site ./app3/index.html para o s3, disponibilizar o acesso via CloudFront e adicionar HTTP Security Headers com Lambda@Edge.
 
 2 - Criar infraestrutura do projeto com Terraform.
 
