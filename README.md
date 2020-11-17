@@ -44,7 +44,7 @@ Estamos testando sua capacidade de implementar infraestrutura automatizada moder
 5 - Disponibilizar uma URL/IP com o retorno do Aplicação "Hello World! {hostname}!".
 
 ## Envie sua solução
-Crie um repositório público(recomendamos o Github). Preferimos ver um histórico de tentativa e erro do que um único push. Quando terminar, envie-nos a URL do repositório do git, URL/IP da aplicação e gerar relatório de segurança com as evidências.
+Crie um repositório público(recomendamos o Github). Preferimos ver um histórico de tentativa e erro do que um único push. Quando terminar, envie-nos a URL do repositório do git, URL/IP da aplicação e relatório de segurança com as evidências.
 
 ## Bônus
 1 - Fazer upload do site /app3/index.html para o s3, disponibilizar o acesso via CloudFront e adicionar HTTP Security Headers com Lambda@Edge.
