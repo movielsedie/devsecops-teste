@@ -10,6 +10,11 @@
   "author": "Sam Clement",
   "license": "ISC",
   "devDependencies": {
+    "nodemon": "^2.0.13",
     "tape": "^4.6.3"
+  },
+  "keywords": [],
+  "dependencies": {
+    "koa": "^2.13.3"
   }
 }
