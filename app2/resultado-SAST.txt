@@ -1,0 +1,1215 @@
+==================================================================================
+
+HORUSEC ENDED THE ANALYSIS WITH STATUS OF "success" AND WITH THE FOLLOWING RESULTS:
+
+==================================================================================
+
+Analysis StartedAt: 2021-09-24 11:55:51
+Analysis FinishedAt: 2021-09-24 11:56:53
+
+==================================================================================
+
+Language: JavaScript
+Severity: CRITICAL
+Line: 2996
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: handlebars
+Details: `handlebars` before 4.7.7 are vulnerable to Remote Code Execution (RCE) when selecting certain compiling options to compile templates coming from an untrusted source.
+Type: Vulnerability
+ReferenceHash: e45fa7e0f55e429855f60345d0fe6c5c6e0775d6f7a08ba8160405b543a18f1d
+
+==================================================================================
+
+Language: Generic
+Severity: CRITICAL
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: handlebars
+Details: Versions of handlebars prior to 4.3.0 are vulnerable to Prototype Pollution leading to Remote Code Execution. Templates may alter an Object's __proto__ and __defineGetter__ properties, which may allow an attacker to execute arbitrary code through crafted payloads.
+Installed Version: "4.1.2", Update to Version: "4.3.0" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2019-19919.
+Cwe Links: (https://cwe.mitre.org/data/definitions/74.html)
+Type: Vulnerability
+ReferenceHash: 8c470678295b4bd1f6b0e732af68ae6bf08f6649923d3b2e6d726059dfea9de7
+
+==================================================================================
+
+Language: Generic
+Severity: CRITICAL
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: handlebars
+Details: The package handlebars before 4.7.7 are vulnerable to Remote Code Execution (RCE) when selecting certain compiling options to compile templates coming from an untrusted source.
+Installed Version: "4.1.2", Update to Version: "4.7.7" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2021-23369.
+Type: Vulnerability
+ReferenceHash: 519625e971421d9f661b8d70ffcb4df20d51d9e3c2b5420c9c47f182c0c34784
+
+==================================================================================
+
+Language: Generic
+Severity: CRITICAL
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: merge
+Details: All versions of package merge are vulnerable to Prototype Pollution via _recursiveMerge .
+Installed Version: "1.2.1", Update to Version: "2.1.1" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2020-28499.
+Type: Vulnerability
+ReferenceHash: f5de9c95cf5e684b0b02d341db604d01f7615fbb79699bc85f0ea89cbba153f1
+
+==================================================================================
+
+Language: Generic
+Severity: CRITICAL
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: set-value
+Details: This affects the package set-value before 4.0.1. A type confusion vulnerability can lead to a bypass of CVE-2019-10747 when the user-provided keys used in the path parameter are arrays.
+Installed Version: "2.0.1", Update to Version: "4.0.1" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2021-23440.
+Cwe Links: (https://cwe.mitre.org/data/definitions/843.html)
+Type: Vulnerability
+ReferenceHash: 7e7a79d6e0350a79c3d1cb81c20c0662ee221b5c3467f505202f1a0bfd7e3b53
+
+==================================================================================
+
+Language: JavaScript
+Severity: HIGH
+Line: 4437
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: merge
+Details: Versions of `merge` before 2.1.1 are vulnerable to Prototype Pollution via _recursiveMerge .
+Type: Vulnerability
+ReferenceHash: 838019d214d39a6471f38d3580793aa8c1ebd69b0512bf02217c423d005aa341
+
+==================================================================================
+
+Language: JavaScript
+Severity: HIGH
+Line: 2857
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: tar
+Details: ### Impact
+
+Arbitrary File Creation, Arbitrary File Overwrite, Arbitrary Code Execution
+
+`node-tar` aims to guarantee that any file whose location would be modified by a symbolic link is not extracted. This is, in part, achieved by ensuring that extracted directories are not symlinks. Additionally, in order to prevent unnecessary stat calls to determine whether a given path is a directory, paths are cached when directories are created.
+
+This logic was insufficient when extracting tar files that contained both a directory and a symlink with the same name as the directory, where the symlink and directory names in the archive entry used backslashes as a path separator on posix systems. The cache checking logic used both `\` and `/` characters as path separators, however `\` is a valid filename character on posix systems.
+
+By first creating a directory, and then replacing that directory with a symlink, it was thus possible to bypass node-tar symlink checks on directories, essentially allowing an untrusted tar file to symlink into an arbitrary location and subsequently extracting arbitrary files into that location, thus allowing arbitrary file creation and overwrite.
+
+Additionally, a similar confusion could arise on case-insensitive filesystems.  If a tar archive contained a directory at `FOO`, followed by a symbolic link named `foo`, then on case-insensitive file systems, the creation of the symbolic link would remove the directory from the filesystem, but _not_ from the internal directory cache, as it would not be treated as a cache hit.  A subsequent file entry within the `FOO` directory would then be placed in the target of the symbolic link, thinking that the directory had already been created. 
+
+These issues were addressed in releases 4.4.16, 5.0.8 and 6.1.7.
+
+The v3 branch of `node-tar` has been deprecated and did not receive patches for these issues. If you are still using a v3 release we recommend you update to a more recent version of `node-tar`. If this is not possible, a workaround is available below.
+
+### Patches
+
+4.4.16 || 5.0.8 || 6.1.7
+
+### Workarounds
+
+Users may work around this vulnerability without upgrading by creating a custom filter method which prevents the extraction of symbolic links.
+
+```js
+const tar = require('tar')
+
+tar.x({
+  file: 'archive.tgz',
+  filter: (file, entry) => {
+    if (entry.type === 'SymbolicLink') {
+      return false
+    } else {
+      return true
+    }
+  }
+})
+```
+
+Users are encouraged to upgrade to the latest patched versions, rather than attempt to sanitize tar input themselves.
+
+### Fix
+
+The problem is addressed in the following ways:
+
+1. All paths are normalized to use `/` as a path separator, replacing `\` with `/` on Windows systems, and leaving `\` intact in the path on posix systems.  This is performed in depth, at every level of the program where paths are consumed.
+2. Directory cache pruning is performed case-insensitively.  This _may_ result in undue cache misses on case-sensitive file systems, but the performance impact is negligible.
+
+#### Caveat
+
+Note that this means that the `entry` objects exposed in various parts of tar's API will now always use `/` as a path separator, even on Windows systems.  This is not expected to cause problems, as `/` is a valid path separator on Windows systems, but _may_ result in issues if `entry.path` is compared against a path string coming from some other API such as `fs.realpath()` or `path.resolve()`.
+
+Users are encouraged to always normalize paths using a well-tested method such as `path.resolve()` before comparing paths to one another.
+Type: Vulnerability
+ReferenceHash: e7d558285ad63cb1b8d01a15242bbdaff171c1e653fcf9bf6ef9e9d8790bd516
+
+==================================================================================
+
+Language: JavaScript
+Severity: HIGH
+Line: 2996
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: handlebars
+Details: Versions of `handlebars` prior to 3.0.8 or 4.5.3 are vulnerable to prototype pollution. It is possible to add or modify properties to the Object prototype through a malicious template. This may allow attackers to crash the application or execute Arbitrary Code in specific conditions.
+Type: Vulnerability
+ReferenceHash: 3f9f202e5ac3384c208e05ebfc8e22bf0fbfc7b0e4b1a731c990d40345788b3a
+
+==================================================================================
+
+Language: JavaScript
+Severity: HIGH
+Line: 2996
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: handlebars
+Details: Versions of `handlebars` prior to 3.0.8 or 4.3.0 are vulnerable to Prototype Pollution leading to Remote Code Execution. Templates may alter an Objects' `__proto__` and `__defineGetter__` properties, which may allow an attacker to execute arbitrary code through crafted payloads.
+Type: Vulnerability
+ReferenceHash: 4b5422d80c55f5b315ea0988fa138e0398e308dcb40c7e8c8623ce29c2df0fed
+
+==================================================================================
+
+Language: JavaScript
+Severity: HIGH
+Line: 2996
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: handlebars
+Details: Versions of `handlebars` prior to 3.0.8 or 4.5.3 are vulnerable to Arbitrary Code Execution. The package's lookup helper fails to properly validate templates, allowing attackers to submit templates that execute arbitrary JavaScript in the system. It is due to an incomplete fix for a [previous issue](https://www.npmjs.com/advisories/1316). This vulnerability can be used to run arbitrary code in a server processing Handlebars templates or on a victim's browser (effectively serving as Cross-Site Scripting).
+Type: Vulnerability
+ReferenceHash: fe757ff6de8bba33b55621df13766f0e748bb7f72f3db654c7e6e3e8e1e1bf38
+
+==================================================================================
+
+Language: JavaScript
+Severity: HIGH
+Line: 6716
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: y18n
+Details: `y18n` before versions 3.2.2, 4.0.1, and 5.0.5 is vulnerable to prototype pollution.
+
+## POC
+
+```
+const y18n = require('y18n')();
+ 
+y18n.setLocale('__proto__');
+y18n.updateLocale({polluted: true});
+
+console.log(polluted); // true
+```
+Type: Vulnerability
+ReferenceHash: cf78ef3e93a4a6b11343dccd8582ab2a6337a6cd29c489683336e279b767863b
+
+==================================================================================
+
+Language: JavaScript
+Severity: HIGH
+Line: 2996
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: handlebars
+Details: Versions of `handlebars` prior to 3.0.8 or 4.5.2 are vulnerable to Arbitrary Code Execution. The package's lookup helper fails to properly validate templates, allowing attackers to submit templates that execute arbitrary JavaScript in the system. It can be used to run arbitrary code in a server processing Handlebars templates or on a victim's browser (effectively serving as Cross-Site Scripting).
+
+The following template can be used to demonstrate the vulnerability:  
+```{{#with "constructor"}}
+	{{#with split as |a|}}
+		{{pop (push "alert('Vulnerable Handlebars JS');")}}
+		{{#with (concat (lookup join (slice 0 1)))}}
+			{{#each (slice 2 3)}}
+				{{#with (apply 0 a)}}
+					{{.}}
+				{{/with}}
+			{{/each}}
+		{{/with}}
+	{{/with}}
+{{/with}}```
+Type: Vulnerability
+ReferenceHash: 6b57362291bc1b2c2b12f5a33833cf66b2eb82e687b6b9cfb0b82f5ff3447e35
+
+==================================================================================
+
+Language: JavaScript
+Severity: HIGH
+Line: 2857
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: tar
+Details: The `tar` package has a high severity vulnerability before versions 3.2.3, 4.4.15, 5.0.7, and 6.1.2.
+
+### Impact
+
+Arbitrary File Creation, Arbitrary File Overwrite, Arbitrary Code Execution
+
+`node-tar` aims to prevent extraction of absolute file paths by turning absolute paths into relative paths when the `preservePaths` flag is not set to `true`. This is achieved by stripping the absolute path root from any absolute file paths contained in a tar file. For example `/home/user/.bashrc` would turn into `home/user/.bashrc`. 
+
+This logic was insufficient when file paths contained repeated path roots such as `////home/user/.bashrc`. `node-tar` would only strip a single path root from such paths. When given an absolute file path with repeating path roots, the resulting path (e.g. `///home/user/.bashrc`) would still resolve to an absolute path, thus allowing arbitrary file creation and overwrite. 
+
+### Workarounds
+
+Users may work around this vulnerability without upgrading by creating a custom `onentry` method which sanitizes the `entry.path` or a `filter` method which removes entries with absolute paths.
+
+```js
+const path = require('path')
+const tar = require('tar')
+
+tar.x({
+  file: 'archive.tgz',
+  // either add this function...
+  onentry: (entry) => {
+    if (path.isAbsolute(entry.path)) {
+      entry.path = sanitizeAbsolutePathSomehow(entry.path)
+      entry.absolute = path.resolve(entry.path)
+    }
+  },
+
+  // or this one
+  filter: (file, entry) => {
+    if (path.isAbsolute(entry.path)) {
+      return false
+    } else {
+      return true
+    }
+  }
+})
+```
+
+Users are encouraged to upgrade to the latest patch versions, rather than attempt to sanitize tar input themselves.
+Type: Vulnerability
+ReferenceHash: 139131651c0d88086567dad062cc34dd4b38ba5ce90608a5776735f7e593add1
+
+==================================================================================
+
+Language: JavaScript
+Severity: HIGH
+Line: 4218
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: lodash
+Details: `lodash` versions prior to 4.17.21 are vulnerable to Command Injection via the template function.
+Type: Vulnerability
+ReferenceHash: 2314bb062d14b666c36df051b6ff813d9a90067bf2e6c5c03b6d0a7bfc86c9e3
+
+==================================================================================
+
+Language: JavaScript
+Severity: HIGH
+Line: 2857
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: tar
+Details: The `tar` package has a high severity vulnerability before versions 3.2.2, 4.4.14, 5.0.6, and 6.1.1.
+
+### Impact
+
+Arbitrary File Creation, Arbitrary File Overwrite, Arbitrary Code Execution
+
+`node-tar` aims to prevent extraction of absolute file paths by turning absolute paths into relative paths when the `preservePaths` flag is not set to `true`. This is achieved by stripping the absolute path root from any absolute file paths contained in a tar file. For example `/home/user/.bashrc` would turn into `home/user/.bashrc`. 
+
+This logic was insufficient when file paths contained repeated path roots such as `////home/user/.bashrc`. `node-tar` would only strip a single path root from such paths. When given an absolute file path with repeating path roots, the resulting path (e.g. `///home/user/.bashrc`) would still resolve to an absolute path, thus allowing arbitrary file creation and overwrite. 
+
+### Workarounds
+
+Users may work around this vulnerability without upgrading by creating a custom `onentry` method which sanitizes the `entry.path` or a `filter` method which removes entries with absolute paths.
+
+```js
+const path = require('path')
+const tar = require('tar')
+
+tar.x({
+  file: 'archive.tgz',
+  // either add this function...
+  onentry: (entry) => {
+    if (path.isAbsolute(entry.path)) {
+      entry.path = sanitizeAbsolutePathSomehow(entry.path)
+      entry.absolute = path.resolve(entry.path)
+    }
+  },
+
+  // or this one
+  filter: (file, entry) => {
+    if (path.isAbsolute(entry.path)) {
+      return false
+    } else {
+      return true
+    }
+  }
+})
+```
+
+Users are encouraged to upgrade to the latest patch versions, rather than attempt to sanitize tar input themselves.
+Type: Vulnerability
+ReferenceHash: 58409c169e322ccdff9bb61b5c19cb037ea09b4840d5179adc79ecdd14df1424
+
+==================================================================================
+
+Language: JavaScript
+Severity: HIGH
+Line: 2857
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: tar
+Details: ### Impact
+Arbitrary File Creation, Arbitrary File Overwrite, Arbitrary Code Execution
+
+node-tar aims to guarantee that any file whose location would be modified by a symbolic link is not extracted. This is, in part, achieved by ensuring that extracted directories are not symlinks. Additionally, in order to prevent unnecessary stat calls to determine whether a given path is a directory, paths are cached when directories are created.
+
+This logic was insufficient when extracting tar files that contained two directories and a symlink with names containing unicode values that normalized to the same value. Additionally, on Windows systems, long path portions would resolve to the same file system entities as their 8.3 "short path" counterparts. A specially crafted tar archive could thus include directories with two forms of the path that resolve to the same file system entity, followed by a symbolic link with a name in the first form, lastly followed by a file using the second form. It led to bypassing node-tar symlink checks on directories, essentially allowing an untrusted tar file to symlink into an arbitrary location and subsequently extracting arbitrary files into that location, thus allowing arbitrary file creation and overwrite.
+
+The v3 branch of `node-tar` has been deprecated and did not receive patches for these issues. If you are still using a v3 release we recommend you update to a more recent version of `node-tar`. If this is not possible, a workaround is available below.
+
+### Patches
+
+6.1.9 || 5.0.10 || 4.4.18
+
+### Workarounds
+
+Users may work around this vulnerability without upgrading by creating a custom filter method which prevents the extraction of symbolic links.
+
+```js
+const tar = require('tar')
+
+tar.x({
+  file: 'archive.tgz',
+  filter: (file, entry) => {
+    if (entry.type === 'SymbolicLink') {
+      return false
+    } else {
+      return true
+    }
+  }
+})
+```
+
+Users are encouraged to upgrade to the latest patched versions, rather than attempt to sanitize tar input themselves.
+
+#### Fix
+
+The problem is addressed in the following ways, when comparing paths in the directory cache and path reservation systems:
+
+1. The `String.normalize('NFKD')` method is used to first normalize all unicode to its maximally compatible and multi-code-point form.
+2. All slashes are normalized to `/` on Windows systems (on posix systems, `\` is a valid filename character, and thus left intact).
+3. When a symbolic link is encountered on Windows systems, the entire directory cache is cleared.  Collisions related to use of 8.3 short names to replace directories with other (non-symlink) types of entries may make archives fail to extract properly, but will not result in arbitrary file writes.
+
+Type: Vulnerability
+ReferenceHash: ec9686c5e2420a5964d1af84b8957780bfb82b8a8105206bea2ad939aa84fb38
+
+==================================================================================
+
+Language: JavaScript
+Severity: HIGH
+Line: 2857
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: tar
+Details: ### Impact
+
+Arbitrary File Creation, Arbitrary File Overwrite, Arbitrary Code Execution
+
+node-tar aims to guarantee that any file whose location would be outside of the extraction target directory is not extracted. This is, in part, accomplished by sanitizing absolute paths of entries within the archive, skipping archive entries that contain `..` path portions, and resolving the sanitized paths against the extraction target directory.
+
+This logic was insufficient on Windows systems when extracting tar files that contained a path that was not an absolute path, but specified a drive letter different from the extraction target, such as `C:some\path`.  If the drive letter does not match the extraction target, for example `D:\extraction\dir`, then the result of `path.resolve(extractionDirectory, entryPath)` would resolve against the current working directory on the `C:` drive, rather than the extraction target directory.
+
+Additionally, a `..` portion of the path could occur immediately after the drive letter, such as `C:../foo`, and was not properly sanitized by the logic that checked for `..` within the normalized and split portions of the path.
+
+This only affects users of `node-tar` on Windows systems.
+
+### Patches
+
+4.4.18 || 5.0.10 || 6.1.9
+
+### Workarounds
+
+There is no reasonable way to work around this issue without performing the same path normalization procedures that node-tar now does.
+
+Users are encouraged to upgrade to the latest patched versions of node-tar, rather than attempt to sanitize paths themselves.
+
+### Fix
+
+The fixed versions strip path roots from all paths prior to being resolved against the extraction target folder, even if such paths are not "absolute".
+
+Additionally, a path starting with a drive letter and then two dots, like `c:../`, would bypass the check for `..` path portions.  This is checked properly in the patched versions.
+
+Finally, a defense in depth check is added, such that if the `entry.absolute` is outside of the extraction taret, and we are not in preservePaths:true mode, a warning is raised on that entry, and it is skipped.  Currently, it is believed that this check is redundant, but it did catch some oversights in development.
+
+Type: Vulnerability
+ReferenceHash: 1975d97dc9278996b45791811972eb3c2a00b1cde29b1b91bb71070e2e852ba8
+
+==================================================================================
+
+Language: Generic
+Severity: HIGH
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: acorn
+Details: Affected versions of acorn are vulnerable to Regular Expression Denial of Service.
+A regex in the form of /[x-\ud800]/u causes the parser to enter an infinite loop.
+The string is not valid UTF16 which usually results in it being sanitized before reaching the parser.
+If an application processes untrusted input and passes it directly to acorn,
+attackers may leverage the vulnerability leading to Denial of Service.
+Installed Version: "5.7.3", Update to Version: "5.7.4, 7.1.1, 6.4.1" for fix this issue.
+PrimaryURL: https://github.com/advisories/GHSA-6chw-6frg-f759.
+Type: Vulnerability
+ReferenceHash: 2eb6bb6012e22cdcf3e4c3c15d70cf7c45eb4e4bd0eebffc5b7f0bcc7f88fd93
+
+==================================================================================
+
+Language: Generic
+Severity: HIGH
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: glob-parent
+Details: This affects the package glob-parent before 5.1.2. The enclosure regex used to check for strings ending in enclosure containing path separator.
+Installed Version: "2.0.0", Update to Version: "5.1.2" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2020-28469.
+Cwe Links: (https://cwe.mitre.org/data/definitions/400.html)
+Type: Vulnerability
+ReferenceHash: 51734e953666562e591af349048ddb5e474e90db1fdb725a1e6a68dd8b15f985
+
+==================================================================================
+
+Language: Generic
+Severity: HIGH
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: handlebars
+Details: Versions of `handlebars` prior to 3.0.8 or 4.5.2 are vulnerable to Arbitrary Code Execution. The package's lookup helper fails to properly validate templates, allowing attackers to submit templates that execute arbitrary JavaScript in the system. It can be used to run arbitrary code in a server processing Handlebars templates or on a victim's browser (effectively serving as Cross-Site Scripting).
+
+The following template can be used to demonstrate the vulnerability:  
+```{{#with "constructor"}}
+	{{#with split as |a|}}
+		{{pop (push "alert('Vulnerable Handlebars JS');")}}
+		{{#with (concat (lookup join (slice 0 1)))}}
+			{{#each (slice 2 3)}}
+				{{#with (apply 0 a)}}
+					{{.}}
+				{{/with}}
+			{{/each}}
+		{{/with}}
+	{{/with}}
+{{/with}}```
+
+
+## Recommendation
+
+Upgrade to version 3.0.8, 4.5.2 or later.
+Installed Version: "4.1.2", Update to Version: "4.5.2, 3.0.8" for fix this issue.
+PrimaryURL: https://github.com/advisories/GHSA-2cf5-4w76-r9qv.
+Type: Vulnerability
+ReferenceHash: 2266ac16cf221fe24b4189707fddc017e6746f98189f0bf06e96a41d67441011
+
+==================================================================================
+
+Language: Generic
+Severity: HIGH
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: handlebars
+Details: Versions of `handlebars` prior to 3.0.8 or 4.5.3 are vulnerable to prototype pollution. It is possible to add or modify properties to the Object prototype through a malicious template. This may allow attackers to crash the application or execute Arbitrary Code in specific conditions.
+
+
+## Recommendation
+
+Upgrade to version 3.0.8, 4.5.3 or later.
+Installed Version: "4.1.2", Update to Version: "4.5.3, 3.0.8" for fix this issue.
+PrimaryURL: https://github.com/advisories/GHSA-g9r4-xpmj-mj65.
+Type: Vulnerability
+ReferenceHash: 8c55a149a18563109c124c7751265ddbd0d2f85ce6bf563c8b5aab4db215ab42
+
+==================================================================================
+
+Language: Generic
+Severity: HIGH
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: handlebars
+Details: Versions of `handlebars` prior to 3.0.8 or 4.5.3 are vulnerable to Arbitrary Code Execution. The package's lookup helper fails to properly validate templates, allowing attackers to submit templates that execute arbitrary JavaScript in the system. It is due to an incomplete fix for a [previous issue](https://www.npmjs.com/advisories/1316). This vulnerability can be used to run arbitrary code in a server processing Handlebars templates or on a victim's browser (effectively serving as Cross-Site Scripting).
+
+
+## Recommendation
+
+Upgrade to version 3.0.8, 4.5.3 or later.
+Installed Version: "4.1.2", Update to Version: "4.5.3, 3.0.8" for fix this issue.
+PrimaryURL: https://github.com/advisories/GHSA-q2c6-c6pm-g3gh.
+Type: Vulnerability
+ReferenceHash: 2746e314505621d0f2141907280d2e96bd6732a980b4857df7c81b3194c45e75
+
+==================================================================================
+
+Language: Generic
+Severity: HIGH
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: ini
+Details: This affects the package ini before 1.3.6. If an attacker submits a malicious INI file to an application that parses it with ini.parse, they will pollute the prototype on the application. This can be exploited further depending on the context.
+Installed Version: "1.3.5", Update to Version: "1.3.6" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2020-7788.
+Cwe Links: (https://cwe.mitre.org/data/definitions/400.html)
+Type: Vulnerability
+ReferenceHash: 759b927df954b6c27d661a290bb2d916ce231e1dec1e70ab05fda15e7618a9d7
+
+==================================================================================
+
+Language: Generic
+Severity: HIGH
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: kind-of
+Details: ctorName in index.js in kind-of v6.0.2 allows external user input to overwrite certain internal attributes via a conflicting name, as demonstrated by 'constructor': {'name':'Symbol'}. Hence, a crafted payload can overwrite this builtin attribute to manipulate the type detection result.
+Installed Version: "6.0.2", Update to Version: "6.0.3" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2019-20149.
+Cwe Links: (https://cwe.mitre.org/data/definitions/668.html)
+Type: Vulnerability
+ReferenceHash: cb57256484f4dda7089d33e33b24d9391613d7b8a91cc9a7258c366aff6c4b31
+
+==================================================================================
+
+Language: Generic
+Severity: HIGH
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: lodash
+Details: Prototype pollution attack when using _.zipObjectDeep in lodash before 4.17.20.
+Installed Version: "4.17.14", Update to Version: "4.17.19" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2020-8203.
+Cwe Links: (https://cwe.mitre.org/data/definitions/770.html)
+Type: Vulnerability
+ReferenceHash: 161ad4837248a1d92d14805a85941b153d574ca1dd457e60e4522b99bc40b1b6
+
+==================================================================================
+
+Language: Generic
+Severity: HIGH
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: lodash
+Details: Lodash versions prior to 4.17.21 are vulnerable to Command Injection via the template function.
+Installed Version: "4.17.14", Update to Version: "4.17.21" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2021-23337.
+Cwe Links: (https://cwe.mitre.org/data/definitions/77.html)
+Type: Vulnerability
+ReferenceHash: 8f23d612c9a3419348c07744fe1268c78f64a8b3d5e6981be7754224954d42cd
+
+==================================================================================
+
+Language: Generic
+Severity: HIGH
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: path-parse
+Details: All versions of package path-parse are vulnerable to Regular Expression Denial of Service (ReDoS) via splitDeviceRe, splitTailRe, and splitPathRe regular expressions. ReDoS exhibits polynomial worst-case time complexity.
+Installed Version: "1.0.6", Update to Version: "1.0.7" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2021-23343.
+Type: Vulnerability
+ReferenceHash: b6017064053cf1f4e34420abc5a29b2ff2ef89e940831309819557ad77b6ca3b
+
+==================================================================================
+
+Language: Generic
+Severity: HIGH
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: tar
+Details: The npm package "tar" (aka node-tar) before versions 6.1.2, 5.0.7, 4.4.15, and 3.2.3 has an arbitrary File Creation/Overwrite vulnerability via insufficient symlink protection. `node-tar` aims to guarantee that any file whose location would be modified by a symbolic link is not extracted. This is, in part, achieved by ensuring that extracted directories are not symlinks. Additionally, in order to prevent unnecessary `stat` calls to determine whether a given path is a directory, paths are cached when directories are created. This logic was insufficient when extracting tar files that contained both a directory and a symlink with the same name as the directory. This order of operations resulted in the directory being created and added to the `node-tar` directory cache. When a directory is present in the directory cache, subsequent calls to mkdir for that directory are skipped. However, this is also where `node-tar` checks for symlinks occur. By first creating a directory, and then replacing that directory with a symlink, it was thus possible to bypass `node-tar` symlink checks on directories, essentially allowing an untrusted tar file to symlink into an arbitrary location and subsequently extracting arbitrary files into that location, thus allowing arbitrary file creation and overwrite. This issue was addressed in releases 3.2.3, 4.4.15, 5.0.7 and 6.1.2.
+Installed Version: "4.4.10", Update to Version: "6.1.2, 5.0.7, 4.4.15, 3.2.3" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2021-32803.
+Cwe Links: (https://cwe.mitre.org/data/definitions/22.html)
+Type: Vulnerability
+ReferenceHash: ba3ac764449fdb28733e3012491fdb480e579eb71f8d0253ba06081867e656dd
+
+==================================================================================
+
+Language: Generic
+Severity: HIGH
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: tar
+Details: The npm package "tar" (aka node-tar) before versions 6.1.1, 5.0.6, 4.4.14, and 3.3.2 has a arbitrary File Creation/Overwrite vulnerability due to insufficient absolute path sanitization. node-tar aims to prevent extraction of absolute file paths by turning absolute paths into relative paths when the `preservePaths` flag is not set to `true`. This is achieved by stripping the absolute path root from any absolute file paths contained in a tar file. For example `/home/user/.bashrc` would turn into `home/user/.bashrc`. This logic was insufficient when file paths contained repeated path roots such as `////home/user/.bashrc`. `node-tar` would only strip a single path root from such paths. When given an absolute file path with repeating path roots, the resulting path (e.g. `///home/user/.bashrc`) would still resolve to an absolute path, thus allowing arbitrary file creation and overwrite. This issue was addressed in releases 3.2.2, 4.4.14, 5.0.6 and 6.1.1. Users may work around this vulnerability without upgrading by creating a custom `onentry` method which sanitizes the `entry.path` or a `filter` method which removes entries with absolute paths. See referenced GitHub Advisory for details. Be aware of CVE-2021-32803 which fixes a similar bug in later versions of tar.
+Installed Version: "4.4.10", Update to Version: "6.1.1, 5.0.6, 4.4.14, 3.2.2" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2021-32804.
+Cwe Links: (https://cwe.mitre.org/data/definitions/22.html)
+Type: Vulnerability
+ReferenceHash: de4304c2f64f85974f7edada976b9018b1fd1bc0872188807bf687a5daa60dd2
+
+==================================================================================
+
+Language: Generic
+Severity: HIGH
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: tar
+Details: The npm package "tar" (aka node-tar) before versions 4.4.16, 5.0.8, and 6.1.7 has an arbitrary file creation/overwrite and arbitrary code execution vulnerability. node-tar aims to guarantee that any file whose location would be modified by a symbolic link is not extracted. This is, in part, achieved by ensuring that extracted directories are not symlinks. Additionally, in order to prevent unnecessary stat calls to determine whether a given path is a directory, paths are cached when directories are created. This logic was insufficient when extracting tar files that contained both a directory and a symlink with the same name as the directory, where the symlink and directory names in the archive entry used backslashes as a path separator on posix systems. The cache checking logic used both `\` and `/` characters as path separators, however `\` is a valid filename character on posix systems. By first creating a directory, and then replacing that directory with a symlink, it was thus possible to bypass node-tar symlink checks on directories, essentially allowing an untrusted tar file to symlink into an arbitrary location and subsequently extracting arbitrary files into that location, thus allowing arbitrary file creation and overwrite. Additionally, a similar confusion could arise on case-insensitive filesystems. If a tar archive contained a directory at `FOO`, followed by a symbolic link named `foo`, then on case-insensitive file systems, the creation of the symbolic link would remove the directory from the filesystem, but _not_ from the internal directory cache, as it would not be treated as a cache hit. A subsequent file entry within the `FOO` directory would then be placed in the target of the symbolic link, thinking that the directory had already been created. These issues were addressed in releases 4.4.16, 5.0.8 and 6.1.7. The v3 branch of node-tar has been deprecated and did not receive patches for these issues. If you are still using a v3 release we recommend you update to a more recent version of node-tar. If this is not possible, a workaround is available in the referenced GHSA-9r2w-394v-53qc.
+Installed Version: "4.4.10", Update to Version: "6.1.7, 5.0.8, 4.4.16" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2021-37701.
+Cwe Links: (https://cwe.mitre.org/data/definitions/22.html),(https://cwe.mitre.org/data/definitions/59.html)
+Type: Vulnerability
+ReferenceHash: 52082914b081a4728fe7f338e62434f71948dc317718e6b401b634d566e1371a
+
+==================================================================================
+
+Language: Generic
+Severity: HIGH
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: tar
+Details: The npm package "tar" (aka node-tar) before versions 4.4.18, 5.0.10, and 6.1.9 has an arbitrary file creation/overwrite and arbitrary code execution vulnerability. node-tar aims to guarantee that any file whose location would be modified by a symbolic link is not extracted. This is, in part, achieved by ensuring that extracted directories are not symlinks. Additionally, in order to prevent unnecessary stat calls to determine whether a given path is a directory, paths are cached when directories are created. This logic was insufficient when extracting tar files that contained both a directory and a symlink with names containing unicode values that normalized to the same value. Additionally, on Windows systems, long path portions would resolve to the same file system entities as their 8.3 "short path" counterparts. A specially crafted tar archive could thus include a directory with one form of the path, followed by a symbolic link with a different string that resolves to the same file system entity, followed by a file using the first form. By first creating a directory, and then replacing that directory with a symlink that had a different apparent name that resolved to the same entry in the filesystem, it was thus possible to bypass node-tar symlink checks on directories, essentially allowing an untrusted tar file to symlink into an arbitrary location and subsequently extracting arbitrary files into that location, thus allowing arbitrary file creation and overwrite. These issues were addressed in releases 4.4.18, 5.0.10 and 6.1.9. The v3 branch of node-tar has been deprecated and did not receive patches for these issues. If you are still using a v3 release we recommend you update to a more recent version of node-tar. If this is not possible, a workaround is available in the referenced GHSA-qq89-hq3f-393p.
+Installed Version: "4.4.10", Update to Version: "6.1.9, 5.0.10, 4.4.18" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2021-37712.
+Cwe Links: (https://cwe.mitre.org/data/definitions/22.html),(https://cwe.mitre.org/data/definitions/59.html)
+Type: Vulnerability
+ReferenceHash: c050817d2963dedc1b1ec7d8698bfc1060c823a0f871afc8672d17916fcc1110
+
+==================================================================================
+
+Language: Generic
+Severity: HIGH
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: tar
+Details: The npm package "tar" (aka node-tar) before versions 4.4.18, 5.0.10, and 6.1.9 has an arbitrary file creation/overwrite and arbitrary code execution vulnerability. node-tar aims to guarantee that any file whose location would be outside of the extraction target directory is not extracted. This is, in part, accomplished by sanitizing absolute paths of entries within the archive, skipping archive entries that contain `..` path portions, and resolving the sanitized paths against the extraction target directory. This logic was insufficient on Windows systems when extracting tar files that contained a path that was not an absolute path, but specified a drive letter different from the extraction target, such as `C:some\path`. If the drive letter does not match the extraction target, for example `D:\extraction\dir`, then the result of `path.resolve(extractionDirectory, entryPath)` would resolve against the current working directory on the `C:` drive, rather than the extraction target directory. Additionally, a `..` portion of the path could occur immediately after the drive letter, such as `C:../foo`, and was not properly sanitized by the logic that checked for `..` within the normalized and split portions of the path. This only affects users of `node-tar` on Windows systems. These issues were addressed in releases 4.4.18, 5.0.10 and 6.1.9. The v3 branch of node-tar has been deprecated and did not receive patches for these issues. If you are still using a v3 release we recommend you update to a more recent version of node-tar. There is no reasonable way to work around this issue without performing the same path normalization procedures that node-tar now does. Users are encouraged to upgrade to the latest patched versions of node-tar, rather than attempt to sanitize paths themselves.
+Installed Version: "4.4.10", Update to Version: "6.1.9, 5.0.10, 4.4.18" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2021-37713.
+Cwe Links: (https://cwe.mitre.org/data/definitions/22.html)
+Type: Vulnerability
+ReferenceHash: 6b187e74ee1c7dda510d6adc851d0655bdb254717c1219413e845045cc31f3c2
+
+==================================================================================
+
+Language: Generic
+Severity: HIGH
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: y18n
+Details: This affects the package y18n before 3.2.2, 4.0.1 and 5.0.5. PoC by po6ix: const y18n = require('y18n')(); y18n.setLocale('__proto__'); y18n.updateLocale({polluted: true}); console.log(polluted); // true
+Installed Version: "3.2.1", Update to Version: "5.0.5, 4.0.1, 3.2.2" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2020-7774.
+Cwe Links: (https://cwe.mitre.org/data/definitions/20.html)
+Type: Vulnerability
+ReferenceHash: 8f76673768a50837365313ee910cdaedd6c0e4a67b90042826ec07827624d1bb
+
+==================================================================================
+
+Language: JavaScript
+Severity: MEDIUM
+Line: 2959
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: glob-parent
+Details: `glob-parent` before 5.1.2 has a regular expression denial of service vulnerability. The enclosure regex used to check for strings ending in enclosure containing path separator.
+Type: Vulnerability
+ReferenceHash: 0642a400095da9b3cac0c2adc1c3bd64740596cc8829b1db122b9f8d5f36a524
+
+==================================================================================
+
+Language: JavaScript
+Severity: MEDIUM
+Line: 3152
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: hosted-git-info
+Details: `hosted-git-info` before versions 2.8.9 and 3.0.8 are vulnerable to Regular Expression Denial of Service (ReDoS) via regular expression shortcutMatch in the fromUrl function in index.js. The affected regular expression exhibits polynomial worst-case time complexity
+Type: Vulnerability
+ReferenceHash: dfabc426c3856ae4be2b03a41153d570b39fa867367da881fd361b2dfc1d257f
+
+==================================================================================
+
+Language: JavaScript
+Severity: MEDIUM
+Line: 4978
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: path-parse
+Details: Affected versions of `path-parse` are vulnerable to Regular Expression Denial of Service (ReDoS) via splitDeviceRe, splitTailRe, and splitPathRe regular expressions. ReDoS exhibits polynomial worst-case time complexity.
+Type: Vulnerability
+ReferenceHash: fc075cc53faafc360b6cf1b00ee8ccca4842f0765cfb4fc14c0627b26baeab23
+
+==================================================================================
+
+Language: JavaScript
+Severity: MEDIUM
+Line: 2996
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: handlebars
+Details: Affected versions of `handlebars` are vulnerable to Denial of Service. The package's parser may be forced into an endless loop while processing specially-crafted templates. This may allow attackers to exhaust system resources leading to Denial of Service.
+Type: Vulnerability
+ReferenceHash: 1c7dec403a16dc57d77819a5ea9bc2a3b4a2c930a8e462c0cadb3c7ad049584f
+
+==================================================================================
+
+Language: JavaScript
+Severity: MEDIUM
+Line: 19
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: acorn
+Details: Affected versions of `acorn` are vulnerable to Regular Expression Denial of Service. A regex in the form of `/[x-\ud800]/u` causes the parser to enter an infinite loop. The string is not valid UTF16 which usually results in it being sanitized before reaching the parser. If an application processes untrusted input and passes it directly to `acorn`, attackers may leverage the vulnerability leading to Denial of Service.
+Type: Vulnerability
+ReferenceHash: 50f0b8b12c510afd6610f1ba5811a576576886a3182aefbcb4b06953b55cf3eb
+
+==================================================================================
+
+Language: Generic
+Severity: MEDIUM
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: ansi-regex
+Details: ansi-regex is vulnerable to Inefficient Regular Expression Complexity
+Installed Version: "3.0.0", Update to Version: "5.0.1, 6.0.1" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2021-3807.
+Type: Vulnerability
+ReferenceHash: 0048810b954b7b62b4afad58ae91bba21c195b7d2625acde2c4294de9f5911a0
+
+==================================================================================
+
+Language: Generic
+Severity: MEDIUM
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: handlebars
+Details: Affected versions of `handlebars` are vulnerable to Denial of Service. The package's parser may be forced into an endless loop while processing specially-crafted templates. This may allow attackers to exhaust system resources leading to Denial of Service.
+
+
+## Recommendation
+
+Upgrade to version 4.4.5 or later.
+Installed Version: "4.1.2", Update to Version: "4.4.5" for fix this issue.
+PrimaryURL: https://github.com/advisories/GHSA-f52g-6jhx-586p.
+Type: Vulnerability
+ReferenceHash: 80f6c8b7d875c56bcdd839f6590daad4408a1565afa107c12637428db22e90e4
+
+==================================================================================
+
+Language: Generic
+Severity: MEDIUM
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: handlebars
+Details: Crash Node.js process from handlebars using a small and simple source
+Installed Version: "4.1.2", Update to Version: ">=4.6.0" for fix this issue.
+PrimaryURL: https://hackerone.com/reports/726364.
+Type: Vulnerability
+ReferenceHash: a98ab254d2bdc01f802410cce30735d781a633b44b022a1592dee833b08aaaa8
+
+==================================================================================
+
+Language: Generic
+Severity: MEDIUM
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: hosted-git-info
+Details: The package hosted-git-info before 3.0.8 are vulnerable to Regular Expression Denial of Service (ReDoS) via regular expression shortcutMatch in the fromUrl function in index.js. The affected regular expression exhibits polynomial worst-case time complexity.
+Installed Version: "2.7.1", Update to Version: "2.8.9, 3.0.8" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2021-23362.
+Type: Vulnerability
+ReferenceHash: c3cc0c9a3c5f7b2a531d112ca8c4d4be58403708d79977e4fa1126ab00c91b5d
+
+==================================================================================
+
+Language: Generic
+Severity: MEDIUM
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: minimist
+Details: minimist before 1.2.2 could be tricked into adding or modifying properties of Object.prototype using a "constructor" or "__proto__" payload.
+Installed Version: "0.0.10", Update to Version: "1.2.3, 0.2.1" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2020-7598.
+Cwe Links: (https://cwe.mitre.org/data/definitions/20.html)
+Type: Vulnerability
+ReferenceHash: f3539877209cd1e82db75772a67b0d839d6023e4f51c6581b867fb638a02d367
+
+==================================================================================
+
+Language: Generic
+Severity: MEDIUM
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: minimist
+Details: minimist before 1.2.2 could be tricked into adding or modifying properties of Object.prototype using a "constructor" or "__proto__" payload.
+Installed Version: "0.0.8", Update to Version: "1.2.3, 0.2.1" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2020-7598.
+Cwe Links: (https://cwe.mitre.org/data/definitions/20.html)
+Type: Vulnerability
+ReferenceHash: cadc7f3eaf1de17a9e754184737da984c4a69db36a512f76648f8ee361275cba
+
+==================================================================================
+
+Language: Generic
+Severity: MEDIUM
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: minimist
+Details: minimist before 1.2.2 could be tricked into adding or modifying properties of Object.prototype using a "constructor" or "__proto__" payload.
+Installed Version: "1.2.0", Update to Version: "1.2.3, 0.2.1" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2020-7598.
+Cwe Links: (https://cwe.mitre.org/data/definitions/20.html)
+Type: Vulnerability
+ReferenceHash: 2ce0b6b1b44fddc717366bee2a6df797970e0ceb5ad7918b2a463edcb06f7c3b
+
+==================================================================================
+
+Language: Generic
+Severity: MEDIUM
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: node-notifier
+Details: This affects the package node-notifier before 9.0.0. It allows an attacker to run arbitrary commands on Linux machines due to the options params not being sanitised when being passed an array.
+Installed Version: "4.6.1", Update to Version: "8.0.1" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2020-7789.
+Cwe Links: (https://cwe.mitre.org/data/definitions/78.html)
+Type: Vulnerability
+ReferenceHash: a6d4bcab2d4609dc8d7ad79bad13d0c74574e5773a2175cfa6796f6afe5f62bb
+
+==================================================================================
+
+Language: Generic
+Severity: MEDIUM
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: tmpl
+Details: nodejs-tmpl is vulnerable to Inefficient Regular Expression Complexity
+Installed Version: "1.0.4", Update to Version: "1.0.5" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2021-3777.
+Type: Vulnerability
+ReferenceHash: 5b3067ea96547f0449c33d904196337cd7b35fde3eed89c5985606f2ec42f24e
+
+==================================================================================
+
+Language: Generic
+Severity: MEDIUM
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: yargs-parser
+Details: yargs-parser could be tricked into adding or modifying properties of Object.prototype using a "__proto__" payload.
+Installed Version: "4.2.1", Update to Version: "5.0.1, 13.1.2, 18.1.2, 15.0.1" for fix this issue.
+PrimaryURL: https://avd.aquasec.com/nvd/cve-2020-7608.
+Cwe Links: (https://cwe.mitre.org/data/definitions/20.html)
+Type: Vulnerability
+ReferenceHash: af4296a348c88995b561cd7e6f3534b98a2fd66f37023859043e3eb7e9191d5d
+
+==================================================================================
+
+Language: JavaScript
+Severity: LOW
+Line: 2580
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: minimist
+Details: Affected versions of `minimist` are vulnerable to prototype pollution. Arguments are not properly sanitized, allowing an attacker to modify the prototype of `Object`, causing the addition or modification of an existing property that will exist on all objects.  
+Parsing the argument `--__proto__.y=Polluted` adds a `y` property with value `Polluted` to all objects. The argument `--__proto__=Polluted` raises and uncaught error and crashes the application.  
+This is exploitable if attackers have control over the arguments being passed to `minimist`.
+
+Type: Vulnerability
+ReferenceHash: 322ebba122748c4a41ebce59af7a5868ddb16cd5ae8393c4833a87a36c887290
+
+==================================================================================
+
+Language: JavaScript
+Severity: LOW
+Line: 1046
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: kind-of
+Details: Versions of `kind-of` 6.x prior to 6.0.3 are vulnerable to a Validation Bypass. A maliciously crafted object can alter the result of the type check, allowing attackers to bypass the type checking validation. 
+Type: Vulnerability
+ReferenceHash: 9062fc24899ce741ec4a43b7f286f041683454081f4f225dd24cded7dd328ab7
+
+==================================================================================
+
+Language: JavaScript
+Severity: LOW
+Line: 4368
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: marked
+Details: Affected versions of `marked` are vulnerable to Regular Expression Denial of Service (ReDoS). The `_label` subrule may significantly degrade parsing performance of malformed input.
+Type: Vulnerability
+ReferenceHash: 173667a9701f6eac68a237ea31234e43357809c21abe7a237b990f3f0552fd1a
+
+==================================================================================
+
+Language: JavaScript
+Severity: LOW
+Line: 6749
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: yargs-parser
+Details: Affected versions of `yargs-parser` are vulnerable to prototype pollution. Arguments are not properly sanitized, allowing an attacker to modify the prototype of `Object`, causing the addition or modification of an existing property that will exist on all objects.  
+Parsing the argument `--foo.__proto__.bar baz'` adds a `bar` property with value `baz` to all objects. This is only exploitable if attackers have control over the arguments being passed to `yargs-parser`.
+
+Type: Vulnerability
+ReferenceHash: 4194b52ab03b1c2101617f1590cb568af5b7a45f77d177b82961248e83f9e0e6
+
+==================================================================================
+
+Language: JavaScript
+Severity: LOW
+Line: 4218
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: lodash
+Details: Versions of `lodash` prior to 4.17.19 are vulnerable to Prototype Pollution.  The function `zipObjectDeep` allows a malicious user to modify the prototype of `Object` if the property identifiers are user-supplied. Being affected by this issue requires zipping objects based on user-provided property arrays.  
+
+This vulnerability causes the addition or modification of an existing property that will exist on all objects and may lead to Denial of Service or Code Execution under specific circumstances.
+Type: Vulnerability
+ReferenceHash: 6f0f4d1a9f26afa092f12b6583863994cfa1b0e6ebe7fcdd66f4933f3491316e
+
+==================================================================================
+
+Language: JavaScript
+Severity: LOW
+Line: 2550
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: ini
+Details: `ini` before version 1.3.6 has a Prototype Pollution vulnerability.
+
+### Impact
+
+If an attacker submits a malicious INI file to an application that parses it with `ini.parse`, they will pollute the prototype on the application. This can be exploited further depending on the context.
+
+### Patches
+
+This has been patched in 1.3.6
+
+### Steps to reproduce
+
+payload.ini
+```
+[__proto__]
+polluted = "polluted"
+```
+
+poc.js:
+```
+var fs = require('fs')
+var ini = require('ini')
+
+var parsed = ini.parse(fs.readFileSync('./payload.ini', 'utf-8'))
+console.log(parsed)
+console.log(parsed.__proto__)
+console.log(polluted)
+```
+
+```
+> node poc.js
+{}
+{ polluted: 'polluted' }
+{ polluted: 'polluted' }
+polluted
+
+```
+Type: Vulnerability
+ReferenceHash: 0a76bf3a874174f6b7295a8995756616f89f1fad09eccb4d4de0a3d142bba562
+
+==================================================================================
+
+Language: JavaScript
+Severity: LOW
+Line: 1087
+Column: 
+SecurityTool: NpmAudit
+Confidence: LOW
+File: /home/gohacking/devsecops-teste/app2/package-lock.json
+Code: braces
+Details: Versions of `braces` prior to 2.3.1 are vulnerable to Regular Expression Denial of Service (ReDoS). Untrusted input may cause catastrophic backtracking while matching regular expressions. This can cause the application to be unresponsive leading to Denial of Service.
+Type: Vulnerability
+ReferenceHash: d9dd2f57bb4022436ae4125d9fba55350320e1a63ab79361077facc086b877c8
+
+==================================================================================
+
+Language: Generic
+Severity: LOW
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: braces
+Details: Versions of `braces` prior to 2.3.1 are vulnerable to Regular Expression Denial of Service (ReDoS). Untrusted input may cause catastrophic backtracking while matching regular expressions. This can cause the application to be unresponsive leading to Denial of Service.
+
+
+## Recommendation
+
+Upgrade to version 2.3.1 or higher.
+Installed Version: "1.8.5", Update to Version: "2.3.1" for fix this issue.
+PrimaryURL: https://github.com/advisories/GHSA-g95f-p29q-9xw4.
+Type: Vulnerability
+ReferenceHash: 93553f7ca489f01888599c2d0a4d896c227c7d59406abf74906b791d8be8f0b9
+
+==================================================================================
+
+Language: Generic
+Severity: LOW
+Line: 0
+Column: 0
+SecurityTool: Trivy
+Confidence: MEDIUM
+File: /home/gohacking/devsecops-teste/app2/yarn.lock
+Code: marked
+Details: Affected versions of `marked` are vulnerable to Regular Expression Denial of Service (ReDoS). The `_label` subrule may significantly degrade parsing performance of malformed input.
+
+
+## Recommendation
+
+Upgrade to version 0.7.0 or later.
+Installed Version: "0.6.3", Update to Version: "0.7.0" for fix this issue.
+PrimaryURL: https://github.com/advisories/GHSA-ch52-vgq2-943f.
+Type: Vulnerability
+ReferenceHash: a6314ccfb602e4c8dfa1e35ed50b08d7ba0d238475c15f48379ad3e2ca0e2b9a
+
+==================================================================================
+
+In this analysis, a total of 57 possible vulnerabilities were found and we classified them into:
+Total of Vulnerability LOW is: 9
+Total of Vulnerability CRITICAL is: 5
+Total of Vulnerability HIGH is: 28
+Total of Vulnerability MEDIUM is: 15
+
+==================================================================================
+
