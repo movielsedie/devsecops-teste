@@ -1,0 +1,164 @@
+Testing node-app...
+
+✗ Low severity vulnerability found in openssl/libcrypto1.1
+  Description: Inadequate Encryption Strength
+  Info: https://snyk.io/vuln/SNYK-ALPINE312-OPENSSL-1075736
+  Introduced through: openssl/libcrypto1.1@1.1.1g-r0, openssl/libssl1.1@1.1.1g-r0, apk-tools/apk-tools@2.10.5-r1, libtls-standalone/libtls-standalone@2.9.1-r1
+  From: openssl/libcrypto1.1@1.1.1g-r0
+  From: openssl/libssl1.1@1.1.1g-r0 > openssl/libcrypto1.1@1.1.1g-r0
+  From: apk-tools/apk-tools@2.10.5-r1 > openssl/libcrypto1.1@1.1.1g-r0
+  and 4 more...
+  Image layer: Introduced by your base image (node:12.18.3-alpine3.12)
+  Fixed in: 1.1.1j-r0
+
+✗ Medium severity vulnerability found in openssl/libcrypto1.1
+  Description: NULL Pointer Dereference
+  Info: https://snyk.io/vuln/SNYK-ALPINE312-OPENSSL-1050745
+  Introduced through: openssl/libcrypto1.1@1.1.1g-r0, openssl/libssl1.1@1.1.1g-r0, apk-tools/apk-tools@2.10.5-r1, libtls-standalone/libtls-standalone@2.9.1-r1
+  From: openssl/libcrypto1.1@1.1.1g-r0
+  From: openssl/libssl1.1@1.1.1g-r0 > openssl/libcrypto1.1@1.1.1g-r0
+  From: apk-tools/apk-tools@2.10.5-r1 > openssl/libcrypto1.1@1.1.1g-r0
+  and 4 more...
+  Image layer: Introduced by your base image (node:12.18.3-alpine3.12)
+  Fixed in: 1.1.1i-r0
+
+✗ Medium severity vulnerability found in openssl/libcrypto1.1
+  Description: Integer Overflow or Wraparound
+  Info: https://snyk.io/vuln/SNYK-ALPINE312-OPENSSL-1075734
+  Introduced through: openssl/libcrypto1.1@1.1.1g-r0, openssl/libssl1.1@1.1.1g-r0, apk-tools/apk-tools@2.10.5-r1, libtls-standalone/libtls-standalone@2.9.1-r1
+  From: openssl/libcrypto1.1@1.1.1g-r0
+  From: openssl/libssl1.1@1.1.1g-r0 > openssl/libcrypto1.1@1.1.1g-r0
+  From: apk-tools/apk-tools@2.10.5-r1 > openssl/libcrypto1.1@1.1.1g-r0
+  and 4 more...
+  Image layer: Introduced by your base image (node:12.18.3-alpine3.12)
+  Fixed in: 1.1.1j-r0
+
+✗ Medium severity vulnerability found in openssl/libcrypto1.1
+  Description: NULL Pointer Dereference
+  Info: https://snyk.io/vuln/SNYK-ALPINE312-OPENSSL-1089237
+  Introduced through: openssl/libcrypto1.1@1.1.1g-r0, openssl/libssl1.1@1.1.1g-r0, apk-tools/apk-tools@2.10.5-r1, libtls-standalone/libtls-standalone@2.9.1-r1
+  From: openssl/libcrypto1.1@1.1.1g-r0
+  From: openssl/libssl1.1@1.1.1g-r0 > openssl/libcrypto1.1@1.1.1g-r0
+  From: apk-tools/apk-tools@2.10.5-r1 > openssl/libcrypto1.1@1.1.1g-r0
+  and 4 more...
+  Image layer: Introduced by your base image (node:12.18.3-alpine3.12)
+  Fixed in: 1.1.1k-r0
+
+✗ Medium severity vulnerability found in musl/musl
+  Description: Out-of-bounds Write
+  Info: https://snyk.io/vuln/SNYK-ALPINE312-MUSL-1042762
+  Introduced through: musl/musl@1.1.24-r8, pax-utils/scanelf@1.2.6-r0, alpine-baselayout/alpine-baselayout@3.2.0-r6, openssl/libcrypto1.1@1.1.1g-r0, openssl/libssl1.1@1.1.1g-r0, zlib/zlib@1.2.11-r3, busybox/busybox@1.31.1-r16, libtls-standalone/libtls-standalone@2.9.1-r1, busybox/ssl_client@1.31.1-r16, musl/musl-utils@1.1.24-r8, gcc/libgcc@9.3.0-r2, apk-tools/apk-tools@2.10.5-r1, libc-dev/libc-utils@0.7.2-r3
+  From: musl/musl@1.1.24-r8
+  From: pax-utils/scanelf@1.2.6-r0 > musl/musl@1.1.24-r8
+  From: alpine-baselayout/alpine-baselayout@3.2.0-r6 > musl/musl@1.1.24-r8
+  and 12 more...
+  Image layer: Introduced by your base image (node:12.18.3-alpine3.12)
+  Fixed in: 1.1.24-r10
+
+✗ High severity vulnerability found in openssl/libcrypto1.1
+  Description: Integer Overflow or Wraparound
+  Info: https://snyk.io/vuln/SNYK-ALPINE312-OPENSSL-1075735
+  Introduced through: openssl/libcrypto1.1@1.1.1g-r0, openssl/libssl1.1@1.1.1g-r0, apk-tools/apk-tools@2.10.5-r1, libtls-standalone/libtls-standalone@2.9.1-r1
+  From: openssl/libcrypto1.1@1.1.1g-r0
+  From: openssl/libssl1.1@1.1.1g-r0 > openssl/libcrypto1.1@1.1.1g-r0
+  From: apk-tools/apk-tools@2.10.5-r1 > openssl/libcrypto1.1@1.1.1g-r0
+  and 4 more...
+  Image layer: Introduced by your base image (node:12.18.3-alpine3.12)
+  Fixed in: 1.1.1j-r0
+
+✗ High severity vulnerability found in openssl/libcrypto1.1
+  Description: Improper Certificate Validation
+  Info: https://snyk.io/vuln/SNYK-ALPINE312-OPENSSL-1089238
+  Introduced through: openssl/libcrypto1.1@1.1.1g-r0, openssl/libssl1.1@1.1.1g-r0, apk-tools/apk-tools@2.10.5-r1, libtls-standalone/libtls-standalone@2.9.1-r1
+  From: openssl/libcrypto1.1@1.1.1g-r0
+  From: openssl/libssl1.1@1.1.1g-r0 > openssl/libcrypto1.1@1.1.1g-r0
+  From: apk-tools/apk-tools@2.10.5-r1 > openssl/libcrypto1.1@1.1.1g-r0
+  and 4 more...
+  Image layer: Introduced by your base image (node:12.18.3-alpine3.12)
+  Fixed in: 1.1.1k-r0
+
+✗ High severity vulnerability found in openssl/libcrypto1.1
+  Description: Out-of-bounds Read
+  Info: https://snyk.io/vuln/SNYK-ALPINE312-OPENSSL-1569450
+  Introduced through: openssl/libcrypto1.1@1.1.1g-r0, openssl/libssl1.1@1.1.1g-r0, apk-tools/apk-tools@2.10.5-r1, libtls-standalone/libtls-standalone@2.9.1-r1
+  From: openssl/libcrypto1.1@1.1.1g-r0
+  From: openssl/libssl1.1@1.1.1g-r0 > openssl/libcrypto1.1@1.1.1g-r0
+  From: apk-tools/apk-tools@2.10.5-r1 > openssl/libcrypto1.1@1.1.1g-r0
+  and 4 more...
+  Image layer: Introduced by your base image (node:12.18.3-alpine3.12)
+  Fixed in: 1.1.1l-r0
+
+✗ High severity vulnerability found in busybox/busybox
+  Description: Improper Handling of Exceptional Conditions
+  Info: https://snyk.io/vuln/SNYK-ALPINE312-BUSYBOX-1089799
+  Introduced through: busybox/busybox@1.31.1-r16, alpine-baselayout/alpine-baselayout@3.2.0-r6, busybox/ssl_client@1.31.1-r16
+  From: busybox/busybox@1.31.1-r16
+  From: alpine-baselayout/alpine-baselayout@3.2.0-r6 > busybox/busybox@1.31.1-r16
+  From: busybox/ssl_client@1.31.1-r16
+  Image layer: Introduced by your base image (node:12.18.3-alpine3.12)
+  Fixed in: 1.31.1-r20
+
+✗ High severity vulnerability found in apk-tools/apk-tools
+  Description: Out-of-bounds Read
+  Info: https://snyk.io/vuln/SNYK-ALPINE312-APKTOOLS-1246338
+  Introduced through: apk-tools/apk-tools@2.10.5-r1
+  From: apk-tools/apk-tools@2.10.5-r1
+  Image layer: Introduced by your base image (node:12.18.3-alpine3.12)
+  Fixed in: 2.10.6-r0
+
+✗ Critical severity vulnerability found in openssl/libcrypto1.1
+  Description: Buffer Overflow
+  Info: https://snyk.io/vuln/SNYK-ALPINE312-OPENSSL-1569452
+  Introduced through: openssl/libcrypto1.1@1.1.1g-r0, openssl/libssl1.1@1.1.1g-r0, apk-tools/apk-tools@2.10.5-r1, libtls-standalone/libtls-standalone@2.9.1-r1
+  From: openssl/libcrypto1.1@1.1.1g-r0
+  From: openssl/libssl1.1@1.1.1g-r0 > openssl/libcrypto1.1@1.1.1g-r0
+  From: apk-tools/apk-tools@2.10.5-r1 > openssl/libcrypto1.1@1.1.1g-r0
+  and 4 more...
+  Image layer: Introduced by your base image (node:12.18.3-alpine3.12)
+  Fixed in: 1.1.1l-r0
+
+✗ Critical severity vulnerability found in apk-tools/apk-tools
+  Description: Out-of-bounds Read
+  Info: https://snyk.io/vuln/SNYK-ALPINE312-APKTOOLS-1533753
+  Introduced through: apk-tools/apk-tools@2.10.5-r1
+  From: apk-tools/apk-tools@2.10.5-r1
+  Image layer: Introduced by your base image (node:12.18.3-alpine3.12)
+  Fixed in: 2.10.7-r0
+
+
+
+Organization:      movielsedie
+Package manager:   apk
+Target file:       Dockerfile
+Project name:      docker-image|node-app
+Docker image:      node-app
+Platform:          linux/amd64
+Base image:        node:12.18.3-alpine3.12
+Licenses:          enabled
+
+Tested 16 dependencies for known issues, found 12 issues.
+
+Base Image               Vulnerabilities  Severity
+node:12.18.3-alpine3.12  27               2 critical, 13 high, 9 medium, 3 low
+
+Recommendations for base image upgrade:
+
+Minor upgrades
+Base Image               Vulnerabilities  Severity
+node:12.22.6-alpine3.12  0                0 critical, 0 high, 0 medium, 0 low
+
+Major upgrades
+Base Image              Vulnerabilities  Severity
+node:16.9.0-alpine3.12  0                0 critical, 0 high, 0 medium, 0 low
+
+Alternative image types
+Base Image                 Vulnerabilities  Severity
+node:16.9.1-bullseye-slim  38               1 critical, 0 high, 2 medium, 35 low
+node:16.9-buster-slim      62               2 critical, 8 high, 6 medium, 46 low
+node:16.7.0-slim           62               2 critical, 8 high, 6 medium, 46 low
+
+
+Pro tip: use `--exclude-base-image-vulns` to exclude from display Docker base image vulnerabilities.
+
+To remove this message in the future, please run `snyk config set disableSuggestions=true`
+
